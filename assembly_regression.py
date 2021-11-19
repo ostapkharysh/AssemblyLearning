@@ -144,10 +144,11 @@ def Z_scoring(data, X_values, Y_value, beta):
     Z_model = dict()
     for est in estimators.keys():
         rf = RandomForestRegressor()
-        Z_model[est] = RandomizedSearchCV(estimator=rf, n_iter=10, param_distributions=random_grid,
-                                          cv=2, verbose=2, random_state=42,
-                                          n_jobs=-1)  # set the random forest regression model for error prediction
-        # Z_model[est] = rf
+        #Z_model[est] = RandomizedSearchCV(estimator=rf, n_iter=10, param_distributions=random_grid,
+        #                                  cv=2, verbose=2, random_state=42,
+        #                                  n_jobs=-1)  # set the random forest regression model for error prediction
+        
+        Z_model[est] = rf
         Z_model[est].fit(global_test[X_values].values, global_test[est])  # train error prediction model
     return Z_model, estimators
 
