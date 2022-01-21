@@ -186,11 +186,7 @@ def init_est():
 
 def analyze_assembly(learning_ds, competition_ds, X, Y, trained_est = None, priority=None, beta=None):
     """
-    :param learning_ds:
-    :param competition_ds:
-    :param X:
-    :param Y:
-    :return:
+    Innitiate the Ensembling
     """
     if not trained_est:
         est = init_est()

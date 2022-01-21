@@ -257,7 +257,7 @@ def train_estimators(estimators, x_train, y_train):
 
 def analyze_ensemble(learning_ds, competition_ds, X, Y,  trained_est = None, priority=None, approach=None, beta=None):
     """
-    Innitiate the Ensempling
+    Innitiate the Ensembling
     """
     if not trained_est:
         est = init_est()
