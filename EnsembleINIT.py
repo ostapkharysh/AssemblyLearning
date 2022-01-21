@@ -22,11 +22,11 @@ def regression_scoring(y, yhat):
     Returns regression scores
     """
     scores = dict()
-    #scores['mae'] = metrics.mean_absolute_error(y, yhat)
+    scores['mae'] = metrics.mean_absolute_error(y, yhat)
     scores['squared_error'] = np.square(np.subtract(y, yhat))
-    #scores['mse'] = metrics.mean_squared_error(y, yhat)
-    #scores['rmse'] = scores['mse'] ** (0.5)
-    # scores['r2'] = metrics.r2_score(y,yhat) # impossible if evaluating only 1 prediction (at least 1 needed)
+    scores['mse'] = metrics.mean_squared_error(y, yhat)
+    scores['rmse'] = scores['mse'] ** (0.5)
+    scores['r2'] = metrics.r2_score(y,yhat) # impossible if evaluating only 1 prediction (at least 1 needed)
     return scores
 
 
@@ -54,7 +54,6 @@ def calculate_weights(errs, priority=None, approach=None):
             
 
         scorers = list()
-        #print(np.exp(list(values.values())))
         
         if approach == "exp":
             tot = np.sum([np.exp(-el) for el in values.values()])
@@ -126,30 +125,21 @@ def Z_scoring(data, X_values, Y_value, beta, estimators):
         estimators = train_estimators(estimators, x_train=train[X_values].values, y_train=train[Y_value].values)  # train estimators
         
         # Without estimators training
-        test = data.iloc[0:finish_ids[iter]]
-        #print(iter, test)
+        #test = data.iloc[0:finish_ids[iter]]
 
-        #estimators = regression_train(x_train=train[X_values].values, y_train=train[Y_value])  # train estimators
 
         for est in estimators.keys():
             y_est = estimators[est].predict(test[X_values].values)  # predict with individual estimations
             errors[est] += regression_scoring(y=test[Y_value].values, yhat=y_est)['squared_error'].tolist()  # calculate an error of individual estimator
-            #print(errors[est]) # HEREREREREE
-            
+
 
         global_test = global_test.append(test[X_values], ignore_index=True)
         
 
     
     for k in errors.keys():
-        #print(k)
-        #print(errors[k])
         global_test[k] = errors[k][0]
         
-    #print(global_test)
-    
-    #global_test.to_csv("CHECH.CSV")
-    #print(global_test)
     
 
     Z_model = dict()
@@ -207,7 +197,6 @@ def compete(compet_ds, Z_model, estimators, X_values, Y_value, priority=None, ap
 
     results = regression_scoring(Z_based_y_hat[0], compet_ds[Y_value])
     return results
-    # Predicted the Errors of the models by Random Forest Regression
     
 
 def init_est():
@@ -268,11 +257,7 @@ def train_estimators(estimators, x_train, y_train):
 
 def analyze_ensemble(learning_ds, competition_ds, X, Y,  trained_est = None, priority=None, approach=None, beta=None):
     """
-    :param learning_ds:
-    :param competition_ds:
-    :param X:
-    :param Y:
-    :return:
+    Innitiate the Ensempling
     """
     if not trained_est:
         est = init_est()
